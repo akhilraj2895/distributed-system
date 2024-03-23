@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <style>
+        body {
+            background-image: url('https://wallpapers.com/images/hd/face-recognition-1920-x-1500-wallpaper-dhio0zel3dhqejv3.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: white; /* Added color rule */
+          }
+      .flexbox {
+        display: flex;
+      }
+
+      .flexbox div {    
+        flex: 1;
+        /* border: 1px solid black; */
+        padding: 10px;
+      }
+
+      div {
+        display: flex;
+      }
+
+      input {
+        display: none;
+      }
+
+      .custom-file-upload {
+        border: 1px solid transparent;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+      #uploadButton {
+        background: linear-gradient(to right, #007bff, #00bfff);
+        color: #ffffff;
+        border: none;
+        padding: 12px 24px;
+        font-size: 18px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s, color 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+      }
+
+      #uploadButton:hover {
+        background-color: #0056b3;
+      }
+
+      #uploadButton:active {
+        background-color: #003f80;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transform: translateY(2px);
+      }
+    </style>
+    <title>Face Detect</title>
+  </head>
+
+  <body style="height: 100vh">
+    <main class="flexbox" style="height: 100%; padding: 3%">
+      <div style="display: flex; flex-direction: column">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            padding-top: 20%;
+            flex-direction: column;
+          "
+        >
+          <h1 style="
+            margin-bottom: 40px;
+            margin-top: -40;
+        ">Face Recognition using Distributed Systems</h1>
+          <p class="lead mb-4"></p>
+          <label class="custom-file-upload">
+            <input id="fileUpload" type="file" />
+            <span style="background: linear-gradient(to right, #007bff, #00bfff); color: #ffffff; border: none; padding: 12px 24px; font-size: 18px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: background-color 0.3s, color 0.3s; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;">
+              Upload File
+            </span>
+          </label>
+          
+          <p style="padding-top: 3px" class="fileName"></p>
+          <button
+          style="display: none; background: linear-gradient(to right, #007bff, #00bfff); color: #ffffff; border: none; padding: 12px 24px; font-size: 18px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: background-color 0.3s, color 0.3s; text-transform: uppercase; letter-spacing: 1px;"
+          id="uploadButton"
+          onclick="uploadFile()"
+          type="button"
+        >
+           Start
+          </button>
+
+          <p
+          class="lead mb-4"
+          style="margin-top: auto; margin-bottom: 10px"
+        >
+          Developed by Trouble-Shouters
+        </p>
+        </div>
+      </div>
+    </main>
+   
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+
+  </body>
+
+  <script>
+    const fileInput = document.querySelector('input[id="fileUpload"]');
+    const reader = new FileReader();
+    document.getElementById("uploadButton").style.display = "none";
+    let selectedFile = null;
+
+    fileInput.addEventListener("change", (e) => {
+      selectedFile = fileInput.files[0];
+      if (selectedFile) {
+        reader.readAsDataURL(selectedFile);
+        document.querySelector(".fileName").textContent = selectedFile.name;
+        document.getElementById("uploadButton").style.display = "block";
+      }
+    });
+
+    function uploadFile() {
+      data = {
+        file: reader.result,
+        filename: selectedFile.name
+      }
+      fetch('/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+    }
+  </script>
+</html>
